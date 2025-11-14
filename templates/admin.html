@@ -1,0 +1,324 @@
+    {% load static %}
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Admin Page</title>
+        <link rel="stylesheet" href="{% static 'css/admin.css' %}">
+    </head>
+    <body>
+        <nav>
+            <h1 id="wel">Welcome Admin  {{user.name}}</h1>
+            <div>
+                <button id="add_event" onclick="add_event()">Add upcomming Event</button>
+                <button id="modify_userdashboard" onclick="user_dash()">Add Event In User Dashboard</button>
+                <a href="{% url 'view_events' %}"><button id="view_events" onclick="View_events()" >View Events In User Dashboard</button></a>
+                
+            </div>
+        </nav>
+        
+        <div class="add_event">
+            <form method="POST" action="{% url 'add_event' %}">
+                {% csrf_token %}
+                <img onclick="form_close()" src="{% static 'images/close.png' %}" alt="close" style="height: 30px; width: 30px; float: right;" ><br>
+                <h1>Add Event</h1><br><br>
+                <label>Event Name</label>
+                <input type="text" name="name" required><br><br>
+
+                <label>Mobile Number</label>
+                <input type="text" name="phonenumber" required><br><br>
+
+                <label>Event Budget</label>
+                <input type="text" name="event_budget" required><br><br>
+
+                <label>Description</label>
+                <textarea name="description"></textarea><br><br>
+
+                <label>Date</label>
+                <input type="date" name="date" required><br><br>
+
+                <label>Location</label>
+                <input type="text" name="location" required><br><br>
+
+                <button type="submit">Save</button>
+            </form>
+
+        </div>
+    <div class="details">
+        <div class="totel_events_done">
+            <h1>Total Events Done</h1>
+            <p>{{ total_events }}</p>
+            <button style="background-color: skyblue; color: white; padding: 5px ; font-size: 20px; border-radius: 10px; margin: 20px;"  onclick="total_events_view()">View</button>
+        </div>
+
+        <!-- Total Users -->
+        <div class="spent">
+            <h1>Total Users</h1>
+            <p>{{ total_users }}</p>
+            <button style="background-color: skyblue; color: white; padding: 5px ; font-size: 20px; border-radius: 10px; margin: 20px;" onclick="total_users_view()">View</button>
+        </div>
+
+
+            <!-- Total Earned -->
+        <div class="total_earned">
+            <h1>Total Earned</h1>
+            <p>₹{{ total_budget }}</p>        
+        </div>
+    </div>
+
+    <!-- Total Events View -->
+    <div class="total_event">
+        <img onclick="form_close()" src="{% static 'images/close.png' %}" alt="close" style="height: 30px; width: 30px; float: right;" ><br>
+        <h2>All Events</h2>
+        <p>Total events: {{ events|length }}</p>
+        <table border="1" cellspacing="0" cellpadding="10" style="width:100%; border-collapse: collapse; text-align: left; font-size: 20px; ">
+            <thead style="background-color: #222; color: white;">
+                <tr >
+                    <th>ID</th>
+                    <th>Event Name</th>
+                    <th>Customer Mobile</th>
+                    <th>Description</th>
+                    <th>Budget</th>
+                    <th>Date</th>
+                    <th>Location</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for event in events %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ event.booked_by.name|default:"Admin" }}</td>
+                    <td>{{ event.booked_by.phone_number|default:event.phonenumber }}</td>
+                    <td>{{ event.description }}</td>
+                    <td>{{ event.budget }}</td>
+                    <td>{{ event.date }}</td>
+                    <td>{{ event.location }}</td>
+                    <td style="
+                        background-color:
+                        {% if event.status == 'accepted' %}#ccffcc
+                        {% elif event.status == 'rejected' %}#ffcccc
+                        {% else %}#f2f2f2
+                        {% endif %};
+                        color:
+                        {% if event.status == 'accepted' %}#006600
+                        {% elif event.status == 'rejected' %}#cc0000
+                        {% else %}#333333
+                        {% endif %};
+                        font-weight: bold;
+                        text-align: center;
+                    ">
+                        {{ event.status|capfirst }}
+                    </td>
+                    <td>
+                       <button 
+                            style="background-color: rgb(96, 250, 19); color: white; border: none; padding: 5px 10px; border-radius: 5px;"
+                            onclick="event_edit('{{ event.id }}', '{{ event.name }}', '{{ event.description }}', '{{ event.budget }}', '{{ event.date }}', '{{ event.location }}')"
+                            >
+                            Edit
+                        </button>
+                        <form method="POST" action="{% url 'delete_event' event.id %}" style="display:inline;" onsubmit="return confirmDelete();">
+                            {% csrf_token %}
+                            <button type="submit" style="background-color: red; color: white; border: none; padding: 5px 10px; border-radius: 5px;">
+                                Delete
+                            </button>
+                        </form>
+
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" style="text-align:center;">No events found</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+
+    <!-- Total Users Displaying -->
+
+    <div class="total_users">
+        <img onclick="form_close2()" src="{% static 'images/close.png' %}" alt="close" style="height: 30px; width: 30px; float: right;" ><br>
+        <h2>Total Users</h2>
+        <p>Total Users: {{ total_users }}</p>
+        <table border="1" cellspacing="0" cellpadding="10" style="width:100%; border-collapse: collapse; text-align: left; font-size: 20px; ">
+            <thead style="background-color: #222; color: white;">
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>phonenumber</th>
+                    <th>Address</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.phone_number }}</td>
+                    <td>{{ user.address }}</td>
+                    <td>
+                        <button style="background-color: rgb(96, 250, 19); color: white; border: none; padding: 5px 10px; border-radius: 5px;"  onclick="user_edit('{{ user.id }}', '{{ user.name }}', '{{ user.password }}', '{{ user.address }}', '{{ user.phone_number }}')">Edit</button>
+                        <form method="POST" action="{% url 'delete_user' user.id %}" style="display:inline;" onsubmit="return confirmDelete();">
+                            {% csrf_token %}
+                            <button type="submit" style="background-color: red; color: white; border: none; padding: 5px 10px; border-radius: 5px;">
+                                Delete
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" style="text-align:center;">No Users found</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+<!-- Event Editing form -->
+<div class="event_editing">
+  <form method="POST" id="editForm" action="">
+    {% csrf_token %}
+    <img onclick="form_close3()" src="{% static 'images/close.png' %}" alt="close" style="height: 30px; width: 30px; float: right;"><br>
+    <h1>Edit Event</h1><br><br>
+
+    <label>Event Name</label>
+    <input type="text" id="edit_name" name="name" required><br><br>
+
+    <label>Phone number</label>
+    <input type="text" id="phonenumber" name="phonenumber"><br><br>
+
+    <label>Description</label>
+    <textarea id="edit_description" name="description"></textarea><br><br>
+
+    <label>Event Budget</label>
+    <input type="text" id="edit_budget" name="event_budget" required><br><br>
+
+    <label>Date</label>
+    <input type="date" id="edit_date" name="date" required><br><br>
+
+    <label>Location</label>
+    <input type="text" id="edit_location" name="location" required><br><br>
+
+    <button type="submit">Save</button>
+  </form>
+</div>
+
+
+
+<div class="user_edit_form hidden">
+ <img onclick="form_close4()" src="{% static 'images/close.png' %}" alt="close" style="height: 30px; width: 30px; float: right;" ><br>
+    <form method="POST" id="editUserForm">
+      {% csrf_token %}
+      <h2>Edit User</h2><br><br>
+      <label>Username</label><br>
+      <input type="text" name="username" id="edit_username" required><br><br>
+      <label>Password</label><br>
+      <input type="password" name="password" id="edit_password" required><br><br>
+      <label>Address</label><br>
+      <input type="text" name="address" id="edit_address"><br><br>
+      <label>Phone Number</label><br>
+      <input type="text" name="phone_number" id="edit_phone" required><br><br>
+      <button type="submit">Update</button>
+    </form>
+  </div>
+
+
+
+
+    <h1 style="text-align: center; margin-top: 5rem;">Events Booked By Users</h1><br><br>
+    <table border="1" cellpadding="10" cellspacing="0" width="100%">
+        <thead style="background:#333; color:white;">
+            <tr>
+                <th>ID</th><th>Name</th><th>User</th><th>Phone Number</th><th>Date</th>
+                <th>Budget</th><th>Location</th><th>Status</th><th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for event in events %}
+        <tr style="background-color:
+            {% if event.status == 'pending' %}#E6E6FA
+            {% elif event.status == 'accepted' %}#C1FFC1
+            {% else %}#F4A6A6{% endif %}; font-weight:700; color:black; font-size:20px">
+
+                <td>{{forloop.counter}}</td>
+                <td>{{ event.name }}</td>
+                <td>{{ event.booked_by.name }}</td>
+                <td>{{ event.booked_by.phone_number }}</td>
+                <td>{{ event.date }}</td>
+                <td>₹{{ event.budget }}</td>
+                <td>{{ event.location }}</td>
+                <td>{{ event.status|capfirst }}</td>
+                <td>
+                    {% if event.status == 'pending' %}
+                        <a href="{% url 'accept_event' event.id %}" class="accept-btn">Accept</a>
+                        <a href="{% url 'reject_event' event.id %}" class="reject-btn">Reject</a>
+                    {% else %}
+                        <span>—</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+<div class="our_events">
+    <img onclick="form_close5()" src="{% static 'images/close.png' %}" alt="close" style="height: 30px; width: 30px; float: right;" ><br>
+    <h1>Our Previous Events</h1><br><br>
+
+    <!-- Upload Media Form -->
+    <form method="POST" enctype="multipart/form-data" action="{% url 'upload_event_media' %}" class="media-form">
+        {% csrf_token %}
+        <label>Name</label>
+        <input type="text" name="name" required><br><br>
+
+        <label>Video</label>
+        <input type="file" name="video"><br><br>
+
+        <label>Image</label>
+        <input type="file" name="image"><br><br>
+
+        <label>Description</label>
+        <textarea name="description"></textarea><br><br>
+
+        <button type="submit" class="upload-btn">Upload</button>
+    </form>
+
+    <!-- Display Uploaded Media -->
+    <div class="uploaded-media">
+        {% for media in all_media %}
+        <div class="media-card">
+            {% if media.image %}
+            <img src="{{ media.image.url }}" alt="{{ media.name }}">
+            {% endif %}
+            {% if media.video %}
+            <video controls>
+                <source src="{{ media.video.url }}" type="video/mp4">
+            </video>
+            {% endif %}
+            <div class="media-info">
+                <h3>{{ media.name }}</h3>
+                <p>{{ media.description }}</p>
+                <form method="POST" action="{% url 'delete_media' media.id %}" onsubmit="return confirm('Are you sure you want to remove this media?');">
+                    {% csrf_token %}
+                    <button type="submit" class="remove-btn">Remove</button>
+                </form>
+            </div>
+        </div>
+        {% empty %}
+        <p>No media uploaded yet.</p>
+        {% endfor %}
+    </div>
+</div>
+
+
+
+    <script src="{% static 'js/admin.js' %}"></script>
+    </body>
+    </html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Events</title>
+</head>
+<body >
+    <h1 style="text-align: center;">Admin Uploaded Event Media</h1>
+
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% for event in events %}
+        <div style="border:1px solid #ccc; padding:10px; margin:10px;">
+            <p><strong>Name:</strong> {{ event.name }}</p>
+            <p><strong>Description:</strong> {{ event.description }}</p>
+
+            {% if event.image %}
+                <img src="{{ event.image.url }}" alt="Event Image" width="200"><br>
+            {% endif %}
+
+            {% if event.video %}
+                <video width="300" preload="none" controls>
+                    <source src="{{ event.video.url }}" type="video/mp4">
+                </video><br>
+            {% endif %}
+
+            <!-- Delete button -->
+            <form action="{% url 'delete_media' event.id %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="from_user" value="1">
+                <button type="submit" style="background-color:red; color:white; border:none; padding:5px 10px;">
+                    Delete Media
+                </button>
+            </form>
+        </div>
+    {% empty %}
+        <p>No media available.</p>
+    {% endfor %}
+</body>
+</html>
