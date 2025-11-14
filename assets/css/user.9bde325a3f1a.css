@@ -1,0 +1,182 @@
+/* Reset & Base */
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Arial', sans-serif; }
+body { background: #d0eba1ec; color: #333; }
+
+/* Navbar */
+nav {
+    background: linear-gradient(90deg, #6a11cb, #2575fc);
+    padding: 20px;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+nav h1 { font-size: 24px; }
+nav button {
+    background: #fff;
+    color: #2575fc;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+}
+nav button:hover { background: #f1f1f1; }
+
+/* Section Titles */
+.section-title {
+    text-align: center;
+    margin: 30px 0 15px 0;
+    font-size: 28px;
+    color: #2575fc;
+    font-weight: bold;
+}
+
+/* Carousel */
+.image-carousel {
+    position: relative;
+    max-width: 80%;
+    margin: 0 auto 40px auto;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+.carousel-slide {
+    display: none;
+    text-align: center;
+    position: relative;
+}
+.carousel-slide img {
+    width: 100%;
+    height: 500px;
+    object-fit: fill;
+    border-radius: 12px;
+}
+.carousel-slide .media-info {
+    position: absolute;
+    bottom: 15px;
+    left: 20px;
+    color: #fff;
+    background: rgba(0,0,0,0.5);
+    padding: 10px 15px;
+    border-radius: 8px;
+}
+
+/* Video Section */
+.video-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 0 20px 40px 20px;
+}
+.video-section video {
+    width: 100%;
+    height: 700px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* Event cards grid */
+.user-events {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 0 20px 40px 20px;
+}
+.event-card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s;
+}
+.event-card:hover { transform: translateY(-5px); }
+
+/* Status colors */
+.event-card.pending { border-left: 5px solid #f39c12; }
+.event-card.accepted { border-left: 5px solid #27ae60; }
+.event-card.rejected { border-left: 5px solid #c0392b; }
+
+.event-card h3 { color: #2575fc; margin-bottom: 10px; }
+.event-card p { margin-bottom: 8px; }
+.event-card p.status { font-weight: bold; }
+
+/* Messages */
+.messages {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 2000;
+}
+.messages p {
+    padding: 10px 20px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #fff;
+}
+.messages .error { background: #e74c3c; }
+.messages .success { background: #2ecc71; }
+
+/* Form pop-up */
+#createForm {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.6);
+    padding-top: 50px;
+    box-sizing: border-box;
+}
+#createForm form {
+    background: #fff;
+    margin: 5% auto;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+}
+#createForm img { width: 25px; cursor: pointer; float: right; }
+#createForm input, #createForm textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0 16px 0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+#createForm button[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    background: #2575fc;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+#createForm button[type="submit"]:hover { background: #6a11cb; }
+#createForm button[type="button"] {
+    width: 100%;
+    padding: 12px;
+    background: #c0392b;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+}
+#createForm button[type="button"]:hover { background: #e74c3c; }
+#createForm h3 { text-align: center; margin-bottom: 20px; }

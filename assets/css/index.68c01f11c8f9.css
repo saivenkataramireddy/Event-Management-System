@@ -1,0 +1,203 @@
+* {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+body {
+    background: url("../images/image.97cf27b73731.png") no-repeat center center fixed ;
+    background-size: cover;
+}
+
+.home {
+    display: flex;
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center;     
+    height:90vh;           
+    color: white;
+    text-align: center;
+}
+
+.home h1{
+    font-weight: 900;
+    font-size: 70px;
+}
+.home button{
+    font-size: 30px;
+    font-weight: 700;
+    padding: 10px;
+    border-radius: 20px;
+    cursor: pointer;
+    background-color: orangered;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+.home button:hover {
+    color: white;
+    background-color: darkorange;
+    transform: scale(1.05);
+}
+nav {
+    background-color: orangered;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 60px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+nav h1 {
+    font-family: "Momo Signature", cursive;
+    font-size: 28px;
+}
+
+nav h1 span {
+    color: #ffffff;
+}
+
+.nav-links {
+    display: flex;
+    gap: 60px;
+    text-decoration: none;
+}
+
+.nav-links p {
+    margin: 0;
+    cursor: pointer;
+    font-weight: 600;
+    transition: color 0.3s;
+}
+
+.nav-links p:hover {
+    color: #ffffff;
+}
+
+.menu-icon {
+    display: none;
+    cursor: pointer;
+}
+
+.menu-icon img {
+    width: 32px;
+}
+
+@media (max-width: 700px) {
+    .menu-icon {
+        display: block;
+    }
+
+    .nav-links {
+        position: absolute;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        background: white;
+        flex-direction: column;
+        align-items: center;
+        display: none;
+        animation: slideDown 0.5s ease forwards;
+    }
+
+    .nav-links.show {
+        display: flex;
+    }
+
+    .nav-links p {
+        opacity: 0;
+        animation: fadeIn 0.5s ease forwards;
+    }
+    .nav-links.show p:nth-child(1) { animation-delay: 0.1s; }
+    .nav-links.show p:nth-child(2) { animation-delay: 0.3s; }
+    .nav-links.show p:nth-child(3) { animation-delay: 0.5s; }
+    .nav-links.show p:nth-child(4) { animation-delay: 0.7s; }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideDown {
+        from { transform: translateY(-20px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+}
+
+.login_form {
+    background-color: rgba(249, 125, 30, 0.93);
+    border-radius: 10px;
+    padding: 5px 5px;
+    text-align: center;
+    display: none; /* hidden by default */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    font-size: 18px;
+    margin-top: 10rem;
+    margin-bottom: 10rem;
+    width: 350px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.login_form img{
+    height: 30px ;
+    width: 30px;
+    float: right;
+}
+.login_form input{
+    height: 20px;
+    width:250px ;
+}
+.login_form button{
+    background-color: rgb(255, 89, 0);
+    font-size: 19px;
+    border-radius: 20px;
+    padding: 10px;
+    color: white;
+    font-weight: 700;
+        cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+.login_form button:hover {
+    background-color: darkorange;
+    transform: scale(1.05);
+}
+.register_form{
+    position: fixed;              
+    top: 50%;                     
+    left: 50%;                    
+    transform: translate(-50%, -50%); 
+    background-color: rgba(249, 125, 30, 0.93);
+    border-radius: 10px;
+    padding: 25px 35px;
+    text-align: center;
+    display: none;
+    z-index: 9999;                
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    font-size: 18px;
+}
+.register_form img{
+    height: 30px ;
+    width: 30px;
+    float: right;
+}
+.register_form input{
+    height: 20px;
+    width:250px ;
+}
+.register_form button{
+    background-color: rgb(255, 89, 0);
+    font-size: 19px;
+    border-radius: 20px;
+    padding: 10px;
+    color: white;
+    font-weight: 700;
+        cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+.register_form button:hover {
+    background-color: darkorange;
+    transform: scale(1.05);
+}
+.previous{
+    display: none;
+    align-items: center;
+    text-align: center;
+    font-size: 30px;
+}
+
